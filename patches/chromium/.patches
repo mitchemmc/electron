@@ -129,3 +129,5 @@ cherry-pick-1230767.patch
 cherry-pick-1231134.patch
 cherry-pick-1233564.patch
 cherry-pick-1234009.patch
+dpwas_window_control_overlay_api_values_account_for_page_zoom_factor.patch
+reland_make_clientview_a_child_of_the_nonclientframeview.patch
