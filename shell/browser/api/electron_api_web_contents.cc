@@ -1387,8 +1387,19 @@ void WebContents::HandleNewRenderFrame(
     rwh_impl->disable_hidden_ = !background_throttling_;
 
   auto* web_frame = WebFrameMain::FromRenderFrameHost(render_frame_host);
-  if (web_frame)
+  if (web_frame) {
+    // When render process reuse is disabled a new siteinstance will always be
+    // forced for every navigation, if a WebFrameMain instance was created
+    // for a FrameTreeNodeId before navigation started, the corresponding
+    // RenderFrameHost will not be the same when the navigation completes.
+    // Compare GlobalFrameRoutingId to avoid incorrect behavior.
+    if (!ElectronBrowserClient::Get()->CanUseCustomSiteInstance() &&
+        web_frame->render_frame_host()->GetGlobalFrameRoutingId() !=
+            render_frame_host->GetGlobalFrameRoutingId()) {
+      return;
+    }
     web_frame->Connect();
+  }
 }
 
 void WebContents::RenderFrameCreated(
@@ -1420,12 +1431,11 @@ void WebContents::RenderFrameHostChanged(content::RenderFrameHost* old_host,
   // If an instance of WebFrameMain exists, it will need to have its RFH
   // swapped as well.
   //
-  // |old_host| can be a nullptr in so we use |new_host| for looking up the
+  // |old_host| can be a nullptr so we use |new_host| for looking up the
   // WebFrameMain instance.
   auto* web_frame =
       WebFrameMain::FromFrameTreeNodeId(new_host->GetFrameTreeNodeId());
   if (web_frame) {
-    CHECK_EQ(web_frame->render_frame_host(), old_host);
     web_frame->UpdateRenderFrameHost(new_host);
   }
 }
