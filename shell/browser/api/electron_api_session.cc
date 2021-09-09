@@ -982,7 +982,7 @@ void Session::SetSpellCheckerLanguages(
                          "\" is not a valid language code");
       return;
     }
-    language_codes.AppendString(code);
+    language_codes.Append(code);
   }
   browser_context_->prefs()->Set(spellcheck::prefs::kSpellCheckDictionaries,
                                  language_codes);
