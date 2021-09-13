@@ -8,6 +8,8 @@
 #include <gtk/gtk.h>
 #include <stdint.h>
 
+#include <string>
+
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "third_party/skia/include/core/SkBitmap.h"
