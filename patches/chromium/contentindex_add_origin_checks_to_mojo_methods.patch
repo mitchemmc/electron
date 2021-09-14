@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Rayan Kanso <rayankans@google.com>
 Date: Thu, 9 Sep 2021 11:16:13 +0000
-Subject: [ContentIndex] Add Origin checks to mojo methods.
+Subject: Add Origin checks to mojo methods.
 
 (cherry picked from commit 6ef569fd764a8e5f8fba4dcff830d460e406362b)
 
