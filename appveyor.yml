@@ -79,40 +79,7 @@ build_script:
       %GCLIENT_EXTRA_ARGS%
       "https://github.com/electron/electron"
   - ps: >-
-      if ($env:GN_CONFIG -eq 'release') {
-        $env:RUN_GCLIENT_SYNC="true"
-      } else {
-        cd src\electron
-        node script\generate-deps-hash.js
-        $depshash = Get-Content .\.depshash -Raw 
-        $zipfile = "Z:\$depshash.7z"
-        cd ..\..
-        if (Test-Path -Path $zipfile) {
-          # file exists, unzip and then gclient sync
-          7z x -y $zipfile -mmt=30 -aoa
-          if (-not (Test-Path -Path "src\buildtools")) {
-            # the zip file must be corrupt - resync
-            $env:RUN_GCLIENT_SYNC="true"
-            if ($env:TARGET_ARCH -ne 'ia32') {
-              # only save on x64/woa to avoid contention saving
-              $env:SAVE_GCLIENT_SRC="true"
-            }
-          } else {
-            # update angle
-            cd src\third_party\angle
-            git remote set-url origin  https://chromium.googlesource.com/angle/angle.git
-            git fetch
-            cd ..\..\..
-          }
-        } else {    
-          # file does not exist, gclient sync, then zip
-          $env:RUN_GCLIENT_SYNC="true"
-          if ($env:TARGET_ARCH -ne 'ia32') {
-            # only save on x64/woa to avoid contention saving
-            $env:SAVE_GCLIENT_SRC="true"
-          }
-        }
-      }
+      $env:RUN_GCLIENT_SYNC="true"
   - if "%RUN_GCLIENT_SYNC%"=="true" ( gclient sync )
   - ps: >-
       if ($env:SAVE_GCLIENT_SRC -eq 'true') {
