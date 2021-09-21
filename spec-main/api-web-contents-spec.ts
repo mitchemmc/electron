@@ -848,6 +848,14 @@ describe('webContents module', () => {
     });
   });
 
+  describe('getMediaSourceId()', () => {
+    afterEach(closeAllWindows);
+    it('returns a valid stream id', () => {
+      const w = new BrowserWindow({ show: false });
+      expect(w.webContents.getMediaSourceId()).to.be.a('string').that.is.not.empty();
+    });
+  });
+
   describe('userAgent APIs', () => {
     it('can set the user agent (functions)', () => {
       const w = new BrowserWindow({ show: false });
