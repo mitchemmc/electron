@@ -390,7 +390,7 @@ class WebContents : public gin::Wrappable<WebContents>,
     fullscreen_frame_ = rfh;
   }
 
-  std::string GetMediaSourceID();
+  std::string GetMediaSourceID(content::WebContents* request_web_contents);
 
   // mojom::ElectronBrowser
   void Message(bool internal,

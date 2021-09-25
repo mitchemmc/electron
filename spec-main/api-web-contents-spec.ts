@@ -852,7 +852,7 @@ describe('webContents module', () => {
     afterEach(closeAllWindows);
     it('returns a valid stream id', () => {
       const w = new BrowserWindow({ show: false });
-      expect(w.webContents.getMediaSourceId()).to.be.a('string').that.is.not.empty();
+      expect(w.webContents.getMediaSourceId(w.webContents)).to.be.a('string').that.is.not.empty();
     });
   });
 

@@ -3658,7 +3658,8 @@ void WebContents::UpdateHtmlApiFullscreen(bool fullscreen) {
   }
 }
 
-std::string WebContents::GetMediaSourceID() {
+std::string WebContents::GetMediaSourceID(
+    content::WebContents* request_web_contents) {
   auto* frame_host = web_contents()->GetMainFrame();
   DCHECK(frame_host);
   content::DesktopMediaID media_id(
@@ -3667,10 +3668,15 @@ std::string WebContents::GetMediaSourceID() {
       content::WebContentsMediaCaptureId(frame_host->GetProcess()->GetID(),
                                          frame_host->GetRoutingID()));
 
+  auto* request_frame_host = request_web_contents->GetMainFrame();
+  DCHECK(request_frame_host);
+
   std::string id =
       content::DesktopStreamsRegistry::GetInstance()->RegisterStream(
-          frame_host->GetProcess()->GetID(), frame_host->GetRoutingID(),
-          url::Origin::Create(frame_host->GetLastCommittedURL().GetOrigin()),
+          request_frame_host->GetProcess()->GetID(),
+          request_frame_host->GetRoutingID(),
+          url::Origin::Create(
+              request_frame_host->GetLastCommittedURL().GetOrigin()),
           media_id, "", content::kRegistryStreamTypeTab);
 
   return id;
